@@ -1,6 +1,7 @@
 
 /*!
- ******************* BEGIN Caffe Copyright Notice and Disclaimer ****************
+ ******************* BEGIN Caffe Copyright Notice and Disclaimer
+ *****************
  *
  * COPYRIGHT
  *
@@ -24,22 +25,22 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ *FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ *DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ *SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ *OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * CONTRIBUTION AGREEMENT
  *
@@ -47,7 +48,8 @@
  * or otherwise, the contributor releases their content to the
  * license and copyright terms herein.
  *
- ***************** END Caffe Copyright Notice and Disclaimer ********************
+ ***************** END Caffe Copyright Notice and Disclaimer
+ *********************
  *
  * Copyright (c) 2018 Microsoft
  * Licensed under The MIT License [see LICENSE for details]
@@ -61,41 +63,31 @@
 
 /***************** Adapted by Charles Shang *********************/
 
-#ifndef DCN_V2_IM2COL_CUDA
-#define DCN_V2_IM2COL_CUDA
+#pragma once
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+void modulated_deformable_im2col_cuda(
+    cudaStream_t stream, const float *data_im, const float *data_offset,
+    const float *data_mask, const int batch_size, const int channels,
+    const int height_im, const int width_im, const int height_col,
+    const int width_col, const int kernel_h, const int kenerl_w,
+    const int pad_h, const int pad_w, const int stride_h, const int stride_w,
+    const int dilation_h, const int dilation_w, const int deformable_group,
+    float *data_col);
 
-  void modulated_deformable_im2col_cuda(cudaStream_t stream,
-                                        const float *data_im, const float *data_offset, const float *data_mask,
-                                        const int batch_size, const int channels, const int height_im, const int width_im,
-                                        const int height_col, const int width_col, const int kernel_h, const int kenerl_w,
-                                        const int pad_h, const int pad_w, const int stride_h, const int stride_w,
-                                        const int dilation_h, const int dilation_w,
-                                        const int deformable_group, float *data_col);
+void modulated_deformable_col2im_cuda(
+    cudaStream_t stream, const float *data_col, const float *data_offset,
+    const float *data_mask, const int batch_size, const int channels,
+    const int height_im, const int width_im, const int height_col,
+    const int width_col, const int kernel_h, const int kenerl_w,
+    const int pad_h, const int pad_w, const int stride_h, const int stride_w,
+    const int dilation_h, const int dilation_w, const int deformable_group,
+    float *grad_im);
 
-  void modulated_deformable_col2im_cuda(cudaStream_t stream,
-                                        const float *data_col, const float *data_offset, const float *data_mask,
-                                        const int batch_size, const int channels, const int height_im, const int width_im,
-                                        const int height_col, const int width_col, const int kernel_h, const int kenerl_w,
-                                        const int pad_h, const int pad_w, const int stride_h, const int stride_w,
-                                        const int dilation_h, const int dilation_w,
-                                        const int deformable_group, float *grad_im);
-
-  void modulated_deformable_col2im_coord_cuda(cudaStream_t stream,
-                                         const float *data_col, const float *data_im, const float *data_offset, const float *data_mask,
-                                         const int batch_size, const int channels, const int height_im, const int width_im,
-                                         const int height_col, const int width_col, const int kernel_h, const int kenerl_w,
-                                         const int pad_h, const int pad_w, const int stride_h, const int stride_w,
-                                         const int dilation_h, const int dilation_w,
-                                         const int deformable_group,
-                                         float *grad_offset, float *grad_mask);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
+void modulated_deformable_col2im_coord_cuda(
+    cudaStream_t stream, const float *data_col, const float *data_im,
+    const float *data_offset, const float *data_mask, const int batch_size,
+    const int channels, const int height_im, const int width_im,
+    const int height_col, const int width_col, const int kernel_h,
+    const int kenerl_w, const int pad_h, const int pad_w, const int stride_h,
+    const int stride_w, const int dilation_h, const int dilation_w,
+    const int deformable_group, float *grad_offset, float *grad_mask);
